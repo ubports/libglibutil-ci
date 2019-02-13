@@ -4,7 +4,10 @@ pipeline {
     stage('Build source') {
       steps {
         git 'https://git.merproject.org/mer-core/libglibutil.git'
-        sh '/usr/bin/build-source.sh'
+        sh '''
+        sed -i -e '0,/unstable/ s//xenial/' debian/changelog
+        /usr/bin/build-source.sh
+        '''
         stash(name: 'source', includes: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,*.buildinfo,lintian.txt')
         cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, deleteDirs: true)
       }

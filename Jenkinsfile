@@ -5,6 +5,7 @@ pipeline {
       steps {
         git 'https://git.merproject.org/mer-core/libglibutil.git'
         sh '''
+        export SKIP_GIT_CLEANUP=true
         sed -i -e '0,/unstable/ s//xenial/' debian/changelog
         /usr/bin/build-source.sh
         '''
